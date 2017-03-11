@@ -5,4 +5,25 @@
   tasks:
   - name: docker
     apt: name=docker state=latest
+  - name: create rfb.service
+    become: true
+    blockinfile:
+      dest: /etc/avahi/services/rfb.service
+      create: yes
+      block: |
+        <?xml version="1.0" standalone='no'?>
+        <!DOCTYPE service-group SYSTEM "avahi-service.dtd">
+        <service-group>
+          <name replace-wildcards="yes">%h</name>
+            <service>
+            <type>_rfb._tcp</type>
+            <port>5901</port>
+          </service>
+        </service-group>
+  - name: restart avahi-daemon
+    become: true
+    service:
+      name: avahi-daemon
+      state: restarted
+      enabled: yes
 
