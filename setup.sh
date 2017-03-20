@@ -1,5 +1,4 @@
 #!/bin/sh
 
 pip install ansible
-ansible-playbook
-
+ansible-playbook playbook.yml

@@ -5,6 +5,25 @@
   tasks:
   - name: docker
     apt: name=docker state=latest
+  - name: install netatalk
+    apt: name=netatalk state=latest
+  - name: install avahi daemon
+    apt: name=avahi-daemon state=latest
+  - name: create afpd.service
+    become: true
+    blockinfile:
+      dest: /etc/avahi/services/afpd.service
+      create: yes
+      block: |
+        <?xml version="1.0" standalone='no'?><!--*-nxml-*-->
+        <!DOCTYPE service-group SYSTEM "avahi-service.dtd">
+        <service-group>
+           <name replace-wildcards="yes">%h</name>
+           <service>
+              <type>_afpovertcp._tcp</type>
+              <port>548</port>
+           </service>
+        </service-group>
   - name: create rfb.service
     become: true
     blockinfile:
