@@ -3,6 +3,8 @@
   become: yes
 
   tasks:
+  - name: update apt
+    apt: upgrade=dist update_cache=yes
   - name: download docker installer
     get_url:
        url: https://get.docker.com
@@ -12,6 +14,8 @@
     command: /tmp/install_docker.sh
     args:
        creates: /usr/bin/docker
+  - name: install vnc
+    apt: name=realvnc-vnc-server state=latest
   - name: install netatalk
     apt: name=netatalk state=latest
   - name: install avahi daemon
