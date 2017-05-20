@@ -3,8 +3,15 @@
   become: yes
 
   tasks:
-  - name: docker
-    apt: name=docker state=latest
+  - name: download docker installer
+    get_url:
+       url: https://get.docker.com
+       dest: /tmp/install_docker.sh
+       mode: 755
+  - name: instll docker
+    command: /tmp/install_docker.sh
+    args:
+       creates: /usr/bin/docker
   - name: install netatalk
     apt: name=netatalk state=latest
   - name: install avahi daemon
